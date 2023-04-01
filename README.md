@@ -21,7 +21,13 @@ Welcome to this basic Discord bot.
 
 ### Basic Setup
 
-##### Insert your Values into the config.json. Go to your Console and type 
+Insert your Values into the config.json.  
+Run the snippet below in an console to register your commands
+```cmd
+node deploy-commands.js
+```
+
+After that use the snippet below to start the bot
 
 ```cmd
 node index.js
