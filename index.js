@@ -85,7 +85,7 @@ client.on('interactionCreate', async interaction => {
 
         channel.send({ embeds: [embed], components: [close] });
 
-        interaction.reply({ content: 'Ticket created!', ephemeral: true });
+        await interaction.reply({ content: 'Ticket created!', ephemeral: true });
     }
 
     try {
@@ -97,6 +97,15 @@ client.on('interactionCreate', async interaction => {
                 .setTimestamp();
             client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketcreate] });
         }
+	} catch (error) {
+		console.error(error);
+		//interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+
+    if (!command) return;
+
+    try {
+		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
