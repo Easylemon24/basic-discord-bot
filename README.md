@@ -25,6 +25,8 @@ Welcome to this basic Discord bot.
  * Basic setup commands
  * Rate limits
  * Code optimizations
+ * Ticket Archive
+ * Ticket Reason for closure
 
 
 ### Basic Setup
