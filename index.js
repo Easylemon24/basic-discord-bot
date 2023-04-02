@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents, MessageEmbed, 
-MessageActionRow, MessageButton, MessageSelectMenu, MessageSelectOptionData} = require('discord.js');
+MessageActionRow, MessageButton} = require('discord.js');
 const { token, logChannelId, ticketCategoryId } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });

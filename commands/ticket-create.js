@@ -1,9 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const { MessageActionRow, MessageButton } = require('discord.js');
-const { Channel, GuildChannel } = require('discord.js');
-const { Permissions } = require('discord.js');
-const { User } = require('discord.js');
 const { ticketCategoryId } = require('../config.json');
 
 

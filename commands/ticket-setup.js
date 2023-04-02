@@ -13,7 +13,6 @@ module.exports = {
             .setColor('RANDOM')
             .setTimestamp();
 
-        // create a dropdown menu with the options "General", "Moderation", "Support", "Bug Report", and "Other"
         const dropdown = new MessageActionRow()
             .addComponents(
                 new MessageSelectMenu()
@@ -43,7 +42,6 @@ module.exports = {
                     ]),
             );
         
-        // send the embed and the dropdown menu
         interaction.reply({ embeds: [embed], components: [dropdown] });
     }
 };
