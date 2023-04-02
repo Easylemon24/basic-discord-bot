@@ -4,6 +4,7 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 const { Channel, GuildChannel } = require('discord.js');
 const { Permissions } = require('discord.js');
 const { User } = require('discord.js');
+const { ticketCategoryId } = require('../config.json');
 
 
     module.exports = {
@@ -16,7 +17,7 @@ const { User } = require('discord.js');
         );
         channel.permissionOverwrites.create(channel.guild.roles.everyone, { VIEW_CHANNEL: false, SEND_MESSAGES: false });
         channel.permissionOverwrites.create(interaction.user.id, { VIEW_CHANNEL: true, SEND_MESSAGES: true});
-        channel.setParent('1091440784697479219');
+        channel.setParent(`${ticketCategoryId}`);
         const close = new MessageActionRow()
             .addComponents(
                 new MessageButton()

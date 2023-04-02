@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Intents, MessageEmbed} = require('discord.js');
-const { token } = require('./config.json');
-const { logChannelId } = require('./config.json');
+const { Client, Collection, Intents, MessageEmbed, 
+MessageActionRow, MessageButton, MessageSelectMenu, MessageSelectOptionData} = require('discord.js');
+const { token, logChannelId, ticketCategoryId } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -81,6 +81,53 @@ client.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
+});
+
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isSelectMenu()) return;
+
+    const command = client.commands.get(interaction.commandName);
+
+    if (interaction.customId === 'ticket-category') {
+        const channel = await interaction.guild.channels.create(
+            `ticket-${interaction.values}-${interaction.user.username}`
+        );
+        channel.permissionOverwrites.create(channel.guild.roles.everyone, { VIEW_CHANNEL: false, SEND_MESSAGES: false });
+        channel.permissionOverwrites.create(interaction.user.id, { VIEW_CHANNEL: true, SEND_MESSAGES: true});
+        channel.setParent(`${ticketCategoryId}`);
+        const close = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('close-ticket')
+                    .setLabel('Close')
+                    .setStyle('DANGER'),
+        );
+
+        const embed = new MessageEmbed()
+            .setTitle('Ticket')
+            .setDescription(`Hello ${interaction.user}, thank you for creating a ticket. A staff member will be with you shortly.`)
+            .setColor('RANDOM')
+            .setTimestamp();
+
+        channel.send({ embeds: [embed], components: [close] });
+
+        interaction.reply({ content: 'Ticket created!', ephemeral: true });
+    }
+
+    try {
+        if(interaction.customId === 'ticket-category') {
+            const embedlogticketcreate = new MessageEmbed()
+                .setTitle('Ticket created')
+                .setDescription(`Ticket created by ${interaction.user} in ${interaction.values} category`)
+                .setColor('GREEN')
+                .setTimestamp();
+            client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketcreate] });
+        }
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+
 });
 
 client.login(token);
