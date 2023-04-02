@@ -32,10 +32,6 @@ client.once('ready', () => {
     client.user.setActivity(`${guilds.length-1} servers`, { type: 'WATCHING' });
 });
 
-client.on('interactionCreate', interaction => {
-	if (!interaction.isButton()) return;
-    
-});
 // Just when a message contains nice, the bot will react with the letters n i c e and a thumbs up
 client.on('messageCreate', message => {
     if (message.content.includes('nice')) {
@@ -48,9 +44,8 @@ client.on('messageCreate', message => {
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
 
-	const command = client.commands.get(interaction.commandName);
+    const command = client.commands.get(interaction.commandName);
 
     if (interaction.customId === 'close-ticket') {
         interaction.channel.permissionOverwrites.edit(interaction.user.id, { VIEW_CHANNEL: false, SEND_MESSAGES: false });
@@ -66,27 +61,6 @@ client.on('interactionCreate', async interaction => {
 
         return;
     }
-
-	try {
-		await command.execute(interaction);
-        if(command.data.name === 'ticket-create') {
-            const embedlogticketcreate = new MessageEmbed()
-                .setTitle('Ticket created')
-                .setDescription(`Ticket created by ${interaction.user}`)
-                .setColor('GREEN')
-                .setTimestamp();
-            client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketcreate] });
-        }
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-	}
-});
-
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isSelectMenu()) return;
-
-    const command = client.commands.get(interaction.commandName);
 
     if (interaction.customId === 'ticket-category') {
         const channel = await interaction.guild.channels.create(

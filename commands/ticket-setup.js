@@ -7,6 +7,7 @@ module.exports = {
         .setName('ticket-setup')
         .setDescription('Creates the ticket system'),
     async execute(interaction) {
+        if (!interaction.member.permissions.has('MANAGE_GUILD')) return interaction.reply({ content: 'You do not have the required permissions to use this command!', ephemeral: true });
         const embed = new MessageEmbed()
             .setTitle('Create a ticket')
             .setDescription('Select the category of your ticket')
