@@ -18,18 +18,18 @@ for (const file of commandFiles) {
 
 client.on('guildCreate', () => {
     const guilds = client.guilds.cache.map(guild => guild.name);
-    client.user.setActivity(`${guilds.length} servers`, { type: 'WATCHING' });
+    client.user.setActivity(`${guilds.length-1} servers`, { type: 'WATCHING' });
 });
 
 client.on('guildDelete', () => {
     const guilds = client.guilds.cache.map(guild => guild.name);
-    client.user.setActivity(`${guilds.length} servers`, { type: 'WATCHING' });
+    client.user.setActivity(`${guilds.length-1} servers`, { type: 'WATCHING' });
 });
 
 client.once('ready', () => {
 	console.log('Ready!');
     const guilds = client.guilds.cache.map(guild => guild.name);
-    client.user.setActivity(`${guilds.length} servers`, { type: 'WATCHING' });
+    client.user.setActivity(`${guilds.length-1} servers`, { type: 'WATCHING' });
 });
 
 client.on('interactionCreate', interaction => {
