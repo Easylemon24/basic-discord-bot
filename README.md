@@ -18,11 +18,11 @@ Welcome to this basic Discord bot.
  * /server | returns some Server information
  * /user | returns some information about the user
  * /ticket-create | create a ticket for you
+ * /ticket-setup | sends an embed into a channel with a menu to select which category the channel should have
 
 ### Work in Progress
 
  * Basic setup commands
- * Embedded Messages for Ticketsystem
  * Rate limits
  * Permissions
  * Code optimizations
