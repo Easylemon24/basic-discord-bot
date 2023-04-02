@@ -19,6 +19,15 @@ Welcome to this basic Discord bot.
  * /user | returns some information about the user
  * /ticket-create | create a ticket for you
 
+### Work in Progress
+
+ * Basic setup commands
+ * Embedded Messages for Ticketsystem
+ * Rate limits
+ * Permissions
+ * Code optimizations
+
+
 ### Basic Setup
 
 Insert your Values into the config.json.  

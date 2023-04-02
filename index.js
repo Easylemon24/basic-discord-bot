@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, Intents, MessageEmbed} = require('discord.js');
 const { token } = require('./config.json');
 const { logChannelId } = require('./config.json');
 
@@ -43,15 +43,23 @@ client.on('interactionCreate', interaction => {
 	if (!interaction.isButton()) return;
     if (interaction.customId === 'close-ticket') {
         interaction.channel.permissionOverwrites.edit(interaction.user.id, { VIEW_CHANNEL: false, SEND_MESSAGES: false });
+
+        const embedlogticketdelete = new MessageEmbed()
+            .setTitle('Ticket closed')
+            .setDescription(`Ticket closed by ${interaction.user}`)
+            .setColor('RED')
+            .setTimestamp()
+            .setFooter('Ticket closed');
+
         interaction.channel.send({ content: `Ticket closed by ${interaction.user}` });
 
         // send a message to the channel with the id 1091441459066048663 that says "Ticket closed by ${user}"
-        client.channels.cache.get(`${logChannelId}`).send({ content: `Ticket closed by ${interaction.user}` });
+        client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketdelete] });
 
         return;
     }
 });
-
+// Just when a message contains nice, the bot will react with the letters n i c e and a thumbs up
 client.on('messageCreate', message => {
     if (message.content.includes('nice')) {
         message.react('🇳');
@@ -72,7 +80,13 @@ client.on('interactionCreate', async interaction => {
 	try {
 		await command.execute(interaction);
         if(command.data.name === 'ticket-create') {
-            client.channels.cache.get('1091441459066048663').send({ content: `Ticket created by ${interaction.user}` });
+            const embedlogticketcreate = new MessageEmbed()
+                .setTitle('Ticket created')
+                .setDescription(`Ticket created by ${interaction.user}`)
+                .setColor('GREEN')
+                .setTimestamp()
+                .setFooter('Ticket created');
+            client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketcreate] });
         }
 	} catch (error) {
 		console.error(error);
