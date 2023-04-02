@@ -16,48 +16,25 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-// update the status of the bot to the amount of servers it is in when a new server is added
 client.on('guildCreate', () => {
-    // get all servers the bot is in
     const guilds = client.guilds.cache.map(guild => guild.name);
-    // set the status of the bot to "${guilds.length} servers"
     client.user.setActivity(`${guilds.length} servers`, { type: 'WATCHING' });
 });
 
 client.on('guildDelete', () => {
-    // get all servers the bot is in
     const guilds = client.guilds.cache.map(guild => guild.name);
-    // set the status of the bot to "${guilds.length} servers"
     client.user.setActivity(`${guilds.length} servers`, { type: 'WATCHING' });
 });
 
 client.once('ready', () => {
 	console.log('Ready!');
-    // get all servers the bot is in
     const guilds = client.guilds.cache.map(guild => guild.name);
-    // set the status of the bot to "${guilds.length} servers"
     client.user.setActivity(`${guilds.length} servers`, { type: 'WATCHING' });
 });
 
 client.on('interactionCreate', interaction => {
 	if (!interaction.isButton()) return;
-    if (interaction.customId === 'close-ticket') {
-        interaction.channel.permissionOverwrites.edit(interaction.user.id, { VIEW_CHANNEL: false, SEND_MESSAGES: false });
-
-        const embedlogticketdelete = new MessageEmbed()
-            .setTitle('Ticket closed')
-            .setDescription(`Ticket closed by ${interaction.user}`)
-            .setColor('RED')
-            .setTimestamp()
-            .setFooter('Ticket closed');
-
-        interaction.channel.send({ content: `Ticket closed by ${interaction.user}` });
-
-        // send a message to the channel with the id 1091441459066048663 that says "Ticket closed by ${user}"
-        client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketdelete] });
-
-        return;
-    }
+    
 });
 // Just when a message contains nice, the bot will react with the letters n i c e and a thumbs up
 client.on('messageCreate', message => {
@@ -75,7 +52,20 @@ client.on('interactionCreate', async interaction => {
 
 	const command = client.commands.get(interaction.commandName);
 
-	if (!command) return;
+    if (interaction.customId === 'close-ticket') {
+        interaction.channel.permissionOverwrites.edit(interaction.user.id, { VIEW_CHANNEL: false, SEND_MESSAGES: false });
+
+        const embedlogticketdelete = new MessageEmbed()
+            .setTitle('Ticket closed')
+            .setDescription(`Ticket closed by ${interaction.user}`)
+            .setColor('RED')
+            .setTimestamp();
+
+        interaction.channel.send({ embeds: [embedlogticketdelete] });
+        client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketdelete] });
+
+        return;
+    }
 
 	try {
 		await command.execute(interaction);
@@ -84,8 +74,7 @@ client.on('interactionCreate', async interaction => {
                 .setTitle('Ticket created')
                 .setDescription(`Ticket created by ${interaction.user}`)
                 .setColor('GREEN')
-                .setTimestamp()
-                .setFooter('Ticket created');
+                .setTimestamp();
             client.channels.cache.get(`${logChannelId}`).send({ embeds: [embedlogticketcreate] });
         }
 	} catch (error) {
